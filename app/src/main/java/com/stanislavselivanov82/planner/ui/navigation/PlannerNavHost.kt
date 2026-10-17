@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -30,7 +29,6 @@ import com.stanislavselivanov82.planner.ui.day.DayScreen
 import com.stanislavselivanov82.planner.ui.notes.NoteEditScreen
 import com.stanislavselivanov82.planner.ui.notes.NotesScreen
 import com.stanislavselivanov82.planner.ui.settings.SettingsScreen
-import com.stanislavselivanov82.planner.ui.stats.StatsScreen
 import java.time.LocalDate
 
 @Composable
@@ -48,9 +46,8 @@ fun PlannerNavHost(openDay: Long? = null, onDayConsumed: () -> Unit = {}) {
     
     val destinations = listOf(
         Triple(Routes.CALENDAR, R.string.calendar_title, Icons.Default.DateRange),
-        Triple("day/${LocalDate.now().toEpochDay()}", R.string.day_title, Icons.Default.Info),
+        Triple("day/${LocalDate.now().toEpochDay()}", R.string.calendar_title, Icons.Default.Info),
         Triple("notes", R.string.notes_title, Icons.Default.Edit),
-        Triple("stats", R.string.stats_title, Icons.Default.List),
         Triple(Routes.SETTINGS, R.string.more_title, Icons.Default.Settings),
     )
     
@@ -81,9 +78,6 @@ fun PlannerNavHost(openDay: Long? = null, onDayConsumed: () -> Unit = {}) {
             composable("notes") { NotesScreen(onOpenNote = { controller.navigate("note/$it") }) }
             composable("note/{noteId}", arguments = listOf(navArgument("noteId") { type = NavType.LongType })) {
                 NoteEditScreen(onBack = { controller.popBackStack() })
-            }
-            composable("stats") { 
-                StatsScreen() 
             }
             composable(Routes.SETTINGS) {
                 SettingsScreen(onCategories = { controller.navigate(Routes.CATEGORIES) { launchSingleTop = true } })
