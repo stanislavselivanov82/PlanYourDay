@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
-import com.stanislavselivanov82.planner.ui.notes.NotesScreen
-import com.stanislavselivanov82.planner.ui.notes.NoteEditScreen
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,30 +17,43 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.stanislavselivanov82.planner.R
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.stanislavselivanov82.planner.ui.day.DayScreen
+import com.stanislavselivanov82.planner.R
 import com.stanislavselivanov82.planner.ui.calendar.CalendarScreen
 import com.stanislavselivanov82.planner.ui.categories.CategoriesScreen
+import com.stanislavselivanov82.planner.ui.day.DayScreen
+import com.stanislavselivanov82.planner.ui.notes.NoteEditScreen
+import com.stanislavselivanov82.planner.ui.notes.NotesScreen
 import com.stanislavselivanov82.planner.ui.settings.SettingsScreen
+import com.stanislavselivanov82.planner.ui.stats.StatsScreen
+import java.time.LocalDate
 
 @Composable
 fun PlannerNavHost(openDay: Long? = null, onDayConsumed: () -> Unit = {}) {
     val controller = rememberNavController()
+    
     androidx.compose.runtime.LaunchedEffect(openDay) {
-        if (openDay != null) { controller.navigate("day/$openDay") { launchSingleTop = true }; onDayConsumed() }
+        if (openDay != null) { 
+            controller.navigate("day/$openDay") { launchSingleTop = true }
+            onDayConsumed() 
+        }
     }
+    
     val entry by controller.currentBackStackEntryAsState()
+    
     val destinations = listOf(
         Triple(Routes.CALENDAR, R.string.calendar_title, Icons.Default.DateRange),
+        Triple("day/${LocalDate.now().toEpochDay()}", R.string.day_title, Icons.Default.Info),
         Triple("notes", R.string.notes_title, Icons.Default.Edit),
+        Triple("stats", R.string.stats_title, Icons.Default.List),
         Triple(Routes.SETTINGS, R.string.more_title, Icons.Default.Settings),
     )
+    
     Scaffold(bottomBar = {
         if (entry?.destination?.route != "note/{noteId}") NavigationBar {
             destinations.forEach { (route, label, icon) ->
@@ -68,6 +81,9 @@ fun PlannerNavHost(openDay: Long? = null, onDayConsumed: () -> Unit = {}) {
             composable("notes") { NotesScreen(onOpenNote = { controller.navigate("note/$it") }) }
             composable("note/{noteId}", arguments = listOf(navArgument("noteId") { type = NavType.LongType })) {
                 NoteEditScreen(onBack = { controller.popBackStack() })
+            }
+            composable("stats") { 
+                StatsScreen() 
             }
             composable(Routes.SETTINGS) {
                 SettingsScreen(onCategories = { controller.navigate(Routes.CATEGORIES) { launchSingleTop = true } })
