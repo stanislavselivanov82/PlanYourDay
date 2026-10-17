@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="planner_background">#0F1115</color>
+    <color name="planner_surface">#1A1D24</color>
+    <color name="planner_text">#E8EAED</color>
+    <color name="planner_accent">#6C8CFF</color>
+</resources>
