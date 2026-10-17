@@ -46,7 +46,7 @@ fun PlannerNavHost(openDay: Long? = null, onDayConsumed: () -> Unit = {}) {
     
     val destinations = listOf(
         Triple(Routes.CALENDAR, R.string.calendar_title, Icons.Default.DateRange),
-        Triple("day/${LocalDate.now().toEpochDay()}", R.string.calendar_title, Icons.Default.Info),
+        Triple("day/${LocalDate.now().toEpochDay()}", R.string.notes_title, Icons.Default.Info),
         Triple("notes", R.string.notes_title, Icons.Default.Edit),
         Triple(Routes.SETTINGS, R.string.more_title, Icons.Default.Settings),
     )
