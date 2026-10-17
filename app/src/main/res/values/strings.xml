@@ -145,4 +145,5 @@
     <string name="allow_exact">Разрешить точные будильники</string>
     <string name="reminder_later">Позже</string>
     <string name="reminder_access_hint">Напоминание сработает за выбранное число минут до начала при наличии разрешений. Прошедшее время напоминания не планируется.</string>
+    <string name="day_title">День</string>
 </resources>
